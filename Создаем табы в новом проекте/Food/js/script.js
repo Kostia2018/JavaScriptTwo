@@ -141,7 +141,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
     });
 
-    //const modalTimer = setTimeout(openModal,10000);
+    const modalTimer = setTimeout(openModal,10000);
 
 
 
@@ -170,13 +170,14 @@ window.addEventListener('DOMContentLoaded', function () {
 
 
     class RenderWondow {
-        constructor(src, alt, subtitle, descer, prise, parentSelector) {
+        constructor(src, alt, subtitle, descer, prise, parentSelector,...classes) {
         this.src =  src,                       
         this.alt = alt,
         this.subtitle = subtitle,
         this.descer =  descer,
         this.prise  = prise,
         this.dollar = 70,
+        this.classes = classes,
         this.parentSelector = document.querySelector(parentSelector);
         this.dolarPrase();  
            
@@ -187,11 +188,19 @@ window.addEventListener('DOMContentLoaded', function () {
      }
 
      render(){
-      
-        const teg = document.createElement('div');
+       const teg = document.createElement('div');
+
+       if(this.classes.length === 0) {
+          this.classes = "menu__item";
+
+          teg.classList.add(this.classes);
+        }else {
+            this.classes.forEach(item =>{
+               teg.classList.add(item);
+            });
+        }
 
         teg.innerHTML = `
-        <div class="menu__item">
         <img src=${this.src} alt=${this.alt}>
         <h3 class="menu__item-subtitle">${this.subtitle}</h3>
         <div class="menu__item-descr">${this.descer}</div>
@@ -199,8 +208,7 @@ window.addEventListener('DOMContentLoaded', function () {
         <div class="menu__item-price">
             <div class="menu__item-cost">Цена:</div>
             <div class="menu__item-total"><span>${this.prise}</span> грн/день</div>
-        </div>
-       </div> `;
+        </div> `;
     
        this.parentSelector.append(teg);
          }
