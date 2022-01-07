@@ -1,13 +1,13 @@
-window.addEventListener('DOMContentLoaded', function() {
+window.addEventListener('DOMContentLoaded', function () {
 
     // Tabs
-    
-	let tabs = document.querySelectorAll('.tabheader__item'),
-		tabsContent = document.querySelectorAll('.tabcontent'),
-		tabsParent = document.querySelector('.tabheader__items');
 
-	function hideTabContent() {
-        
+    let tabs = document.querySelectorAll('.tabheader__item'),
+        tabsContent = document.querySelectorAll('.tabcontent'),
+        tabsParent = document.querySelector('.tabheader__items');
+
+    function hideTabContent() {
+
         tabsContent.forEach(item => {
             item.classList.add('hide');
             item.classList.remove('show', 'fade');
@@ -16,39 +16,39 @@ window.addEventListener('DOMContentLoaded', function() {
         tabs.forEach(item => {
             item.classList.remove('tabheader__item_active');
         });
-	}
+    }
 
-	function showTabContent(i = 0) {
+    function showTabContent(i = 0) {
         tabsContent[i].classList.add('show', 'fade');
         tabsContent[i].classList.remove('hide');
         tabs[i].classList.add('tabheader__item_active');
     }
-    
+
     hideTabContent();
     showTabContent();
 
-	tabsParent.addEventListener('click', function(event) {
-		const target = event.target;
-		if(target && target.classList.contains('tabheader__item')) {
+    tabsParent.addEventListener('click', function (event) {
+        const target = event.target;
+        if (target && target.classList.contains('tabheader__item')) {
             tabs.forEach((item, i) => {
                 if (target == item) {
                     hideTabContent();
                     showTabContent(i);
                 }
             });
-		}
+        }
     });
-    
+
     // Timer
 
     const deadline = '2022-05-11';
 
     function getTimeRemaining(endtime) {
         const t = Date.parse(endtime) - Date.parse(new Date()),
-            days = Math.floor( (t/(1000*60*60*24)) ),
-            seconds = Math.floor( (t/1000) % 60 ),
-            minutes = Math.floor( (t/1000/60) % 60 ),
-            hours = Math.floor( (t/(1000*60*60) % 24) );
+            days = Math.floor((t / (1000 * 60 * 60 * 24))),
+            seconds = Math.floor((t / 1000) % 60),
+            minutes = Math.floor((t / 1000 / 60) % 60),
+            hours = Math.floor((t / (1000 * 60 * 60) % 24));
 
         return {
             'total': t,
@@ -59,8 +59,8 @@ window.addEventListener('DOMContentLoaded', function() {
         };
     }
 
-    function getZero(num){
-        if (num >= 0 && num < 10) { 
+    function getZero(num) {
+        if (num >= 0 && num < 10) {
             return '0' + num;
         } else {
             return num;
@@ -101,64 +101,139 @@ window.addEventListener('DOMContentLoaded', function() {
     const btnClose = document.querySelector('[data-close]');
 
 
-    
+
 
     function openModal() {
         modal.classList.add('show');
         modal.classList.remove('hide');
-        document.body.style.overflow = 'hidden'; 
+        document.body.style.overflow = 'hidden';
         clearInterval(modalTimer);
     }
-    
-    btnOpen.forEach(emp =>{
+
+    btnOpen.forEach(emp => {
         emp.addEventListener('click', openModal);
     });
 
 
-    function closeModal(){
+    function closeModal() {
         modal.classList.add('hide');
-        modal.classList.remove('show');   
+        modal.classList.remove('show');
         document.body.style.overflow = '';
 
     }
 
-    btnClose.addEventListener('click',closeModal);
+    btnClose.addEventListener('click', closeModal);
 
 
 
-    modal.addEventListener('click',(e)=>{
-        if(e.target === modal) {
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
             closeModal();
         }
 
     });
 
-  document.addEventListener('keydown',(e)=>{
-        if(e.code =='Escape'&& modal.classList.contains('show')) {
+    document.addEventListener('keydown', (e) => {
+        if (e.code == 'Escape' && modal.classList.contains('show')) {
             closeModal();
         }
 
 
-  });
+    });
 
-   const modalTimer = setTimeout(openModal,10000);
+    //const modalTimer = setTimeout(openModal,10000);
 
 
 
-   function openScrolModal() {
-    if((window.pageYOffset+document.documentElement.clientHeight)>= document.documentElement.scrollHeight-1){
-        openModal();
-        window.removeEventListener('scroll',openScrolModal);
-    
+    function openScrolModal() {
+        if ((window.pageYOffset + document.documentElement.clientHeight) >= document.documentElement.scrollHeight - 1) {
+            openModal();
+            window.removeEventListener('scroll', openScrolModal);
+
+        }
+
+
     }
+
+    window.addEventListener('scroll', openScrolModal);
+
+
+
+
+
+
+
+
+
+
+
+
+
+    class RenderWondow {
+        constructor(src, alt, subtitle, descer, prise, parentSelector) {
+        this.src =  src,                       
+        this.alt = alt,
+        this.subtitle = subtitle,
+        this.descer =  descer,
+        this.prise  = prise,
+        this.dollar = 70,
+        this.parentSelector = document.querySelector(parentSelector);
+        this.dolarPrase();  
+           
+    }
+       
+      dolarPrase(){
+      this.prise = this.prise*this.dollar;
+     }
+
+     render(){
       
-   
-    }
+        const teg = document.createElement('div');
 
-   window.addEventListener('scroll',openScrolModal);
+        teg.innerHTML = `
+        <div class="menu__item">
+        <img src=${this.src} alt=${this.alt}>
+        <h3 class="menu__item-subtitle">${this.subtitle}</h3>
+        <div class="menu__item-descr">${this.descer}</div>
+        <div class="menu__item-divider"></div>
+        <div class="menu__item-price">
+            <div class="menu__item-cost">Цена:</div>
+            <div class="menu__item-total"><span>${this.prise}</span> грн/день</div>
+        </div>
+       </div> `;
+    
+       this.parentSelector.append(teg);
+         }
+       }
 
+     new RenderWondow(
+         "img/tabs/vegy.jpg",
+         "vegy",
+         'Меню "Фитнес"',
+         'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов.Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
+         229,
+         '.menu .container'
+       
+         ).render();
 
+         new RenderWondow(
+            "img/tabs/elite.jpg",
+            "elite",
+            'Меню “Премиум”',
+            'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
+            550,
+            '.menu .container'
+         ).render();
 
+         new RenderWondow(
+            "img/tabs/post.jpg",
+            "post",
+            'Меню "Постное"',
+            'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
+            430,
+            '.menu .container'
+
+         ).render();
 
 
 
