@@ -191,9 +191,10 @@ window.addEventListener('DOMContentLoaded', function () {
        const teg = document.createElement('div');
 
        if(this.classes.length === 0) {
-          this.classes = "menu__item";
-
-          teg.classList.add(this.classes);
+        
+        this.classes = "menu__item";
+         teg.classList.add(this.classes);
+        
         }else {
             this.classes.forEach(item =>{
                teg.classList.add(item);
