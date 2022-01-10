@@ -141,7 +141,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
     });
 
-    const modalTimer = setTimeout(openModal,10000);
+    const modalTimer = setTimeout(openModal, 10000);
 
 
 
@@ -170,38 +170,38 @@ window.addEventListener('DOMContentLoaded', function () {
 
 
     class RenderWondow {
-        constructor(src, alt, subtitle, descer, prise, parentSelector,...classes) {
-        this.src =  src,                       
-        this.alt = alt,
-        this.subtitle = subtitle,
-        this.descer =  descer,
-        this.prise  = prise,
-        this.dollar = 70,
-        this.classes = classes,
-        this.parentSelector = document.querySelector(parentSelector);
-        this.dolarPrase();  
-           
-    }
-       
-      dolarPrase(){
-      this.prise = this.prise*this.dollar;
-     }
+        constructor(src, alt, subtitle, descer, prise, parentSelector, ...classes) {
+            this.src = src,
+                this.alt = alt,
+                this.subtitle = subtitle,
+                this.descer = descer,
+                this.prise = prise,
+                this.dollar = 70,
+                this.classes = classes,
+                this.parentSelector = document.querySelector(parentSelector);
+            this.dolarPrase();
 
-     render(){
-       const teg = document.createElement('div');
-
-       if(this.classes.length === 0) {
-        
-        this.classes = "menu__item";
-         teg.classList.add(this.classes);
-        
-        }else {
-            this.classes.forEach(item =>{
-               teg.classList.add(item);
-            });
         }
 
-        teg.innerHTML = `
+        dolarPrase() {
+            this.prise = this.prise * this.dollar;
+        }
+
+        render() {
+            const teg = document.createElement('div');
+
+            if (this.classes.length === 0) {
+
+                this.classes = "menu__item";
+                teg.classList.add(this.classes);
+
+            } else {
+                this.classes.forEach(item => {
+                    teg.classList.add(item);
+                });
+            }
+
+            teg.innerHTML = `
         <img src=${this.src} alt=${this.alt}>
         <h3 class="menu__item-subtitle">${this.subtitle}</h3>
         <div class="menu__item-descr">${this.descer}</div>
@@ -210,39 +210,140 @@ window.addEventListener('DOMContentLoaded', function () {
             <div class="menu__item-cost">Цена:</div>
             <div class="menu__item-total"><span>${this.prise}</span> грн/день</div>
         </div> `;
-    
-       this.parentSelector.append(teg);
-         }
-       }
 
-     new RenderWondow(
-         "img/tabs/vegy.jpg",
-         "vegy",
-         'Меню "Фитнес"',
-         'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов.Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
-         229,
-         '.menu .container'
-       
-         ).render();
+            this.parentSelector.append(teg);
+        }
+    }
 
-         new RenderWondow(
-            "img/tabs/elite.jpg",
-            "elite",
-            'Меню “Премиум”',
-            'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
-            550,
-            '.menu .container'
-         ).render();
+    new RenderWondow(
+        "img/tabs/vegy.jpg",
+        "vegy",
+        'Меню "Фитнес"',
+        'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов.Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
+        229,
+        '.menu .container'
 
-         new RenderWondow(
-            "img/tabs/post.jpg",
-            "post",
-            'Меню "Постное"',
-            'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
-            430,
-            '.menu .container'
+    ).render();
 
-         ).render();
+    new RenderWondow(
+        "img/tabs/elite.jpg",
+        "elite",
+        'Меню “Премиум”',
+        'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
+        550,
+        '.menu .container'
+    ).render();
+
+    new RenderWondow(
+        "img/tabs/post.jpg",
+        "post",
+        'Меню "Постное"',
+        'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
+        430,
+        '.menu .container'
+
+    ).render();
+
+
+
+    //Forms
+
+
+    const forms = document.querySelectorAll('form');
+
+    const responOt = {
+
+        loading: 'загркза....',
+        succes:  'спксибо, мы скоро с вами свяжимся',
+        failure: 'что то пошло не так'
+    };
+
+
+    forms.forEach(ivnt => {
+        postData(ivnt);
+
+
+    });
+
+
+    function postData(form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const divv = document.createElement('div');
+            divv.classList.add('status');
+            divv.textContent = responOt.loading;
+            form.appendChild(divv);
+           
+            
+            
+            const request = new XMLHttpRequest();
+
+            request.open('POST', 'server.php');
+
+            request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+           
+            const dat = new FormData(form);
+            
+            const obj = {};
+
+            dat.forEach(function(key,valaue){
+              obj[key] = valaue;
+
+            });
+
+           const json = JSON.stringify(obj);
+
+
+           
+           
+            request.send(json);
+
+           
+           
+           
+           
+            request.addEventListener('load', (e) => {
+
+                if (request.status === 200) {
+
+                    console.log(request.response);
+                    divv.textContent = responOt.succes;
+                    form.reset();
+                    setTimeout(()=>{
+                        divv.remove();
+                    },3000);
+
+                } else {
+
+                   divv.textContent = responOt.failure;
+
+                }
+
+
+
+
+
+
+
+            });
+
+
+
+
+
+
+
+
+
+        });
+
+
+
+
+
+    }
+
 
 
 
