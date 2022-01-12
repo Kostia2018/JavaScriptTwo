@@ -277,16 +277,8 @@ window.addEventListener('DOMContentLoaded', function () {
             margin: 0 auto;
             `;
             
-            
-            form.insertAdjacentElement('afterend',textMe);
            
-            
-            
-            const request = new XMLHttpRequest();
-
-            request.open('POST', 'server.php');
-
-            request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+           
            
             const dat = new FormData(form);
             
@@ -297,42 +289,34 @@ window.addEventListener('DOMContentLoaded', function () {
 
             });
 
-           const json = JSON.stringify(obj);
+          
 
+
+           fetch('server.php',{
+           method:'POST',
+           body: JSON.stringify(obj),
+           headers:{
+               'Content-Type':'application/json'
+           }
+           }).then(data=>{
+               console.log(data);
+               showThanksModal(responOt.succes);
+               textMe.remove();
+
+           }).catch(()=>{
+              console.log(responOt.failure);
+           }).finally(()=>{
+              form.reset();
+
+           });
+
+           
+            
 
            
            
-            request.send(json);
-
            
-           
-           
-           
-            request.addEventListener('load', () => {
-
-                if (request.status === 200) {
-
-                    console.log(request.response);
-                    showThanksModal(responOt.succes);
-                    textMe.remove();
-                    
-                    form.reset();
-                    
-
-                } else {
-
-                    textMe.textContent = responOt.failure;
-
-                }
-
-
-
-
-
-
-
-            });
-
+       
 
 
 
